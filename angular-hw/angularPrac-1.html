@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Hello World for Angular</title>
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script>
+        angular.module('myApp', []).controller('MyController', function ($scope, $http) {
+            $scope.message = 'hello world from angularjs';
+            $scope.names = ['Aditya', 'Raymond', 'Jui', 'Chris', 'Nina', 'Rashmika'];
+            $scope.name = 'Aditya';
+            $scope.updateName = function () {
+                $scope.name = 'Nina';
+            };
+            $http.get('https://api.github.com/search/repositories?q=IoT').success(function (data, status, headers) {
+                console.log(data);
+                $scope.repositories = data.items;
+                console.log(headers('Link'));
+            });
+            $scope.printData = function (event) {
+                console.log(event);
+                if (event.keyCode === 13) {
+                    console.log($scope.search);
+                }
+            };
+        }).filter('firstletter', function () {
+            return function (inp) {
+                return inp.replace(/\b[a-z]/gmi, function (l) {
+                    return l.toUpperCase();
+                });
+            }
+        });
+    </script>
+    <script></script>
+</head>
+<body>
+<ul>
+    <li>Script src to the angular.js file</li>
+    <li>Write a script to create the angular module</li>
+    <li>Create a module and a controller</li>
+    <li>Use the $scope to attach a property</li>
+    <li>Bootstrap myApp by using ng-app directive on the element that you want angular to control</li>
+    <li>Define the view</li>
+</ul>
+
+<div ng-controller="MyController">
+    {{message | firstletter}}
+
+    <ul>
+        <li ng-repeat="name in names">{{name}}</li>
+    </ul>
+
+    <input type="text" ng-model="name" ng-change="isData=!name"/>
+
+    <div ng-show="isData">The input box is empty</div>
+
+    <div ng-hide="isData">The input box is not empty</div>
+
+    <input type="text" ng-keydown="printData($event)" ng-model="search"/>
+
+    <div>The name within the input box is {{name}}</div>
+
+    <button ng-click="updateName()">UpdateName</button>
+    <h1>Repositories on Internet of Things</h1>
+    <ul>
+        <li ng-repeat="repo in repositories">{{repo.full_name}}</li>
+    </ul>
+</div>
+</body>
+</html>

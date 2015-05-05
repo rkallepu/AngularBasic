@@ -1,0 +1,54 @@
+<!Doctype html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Current Weather</title>
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="override.css" />
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script>
+        angular.module('myApp',[]).controller('MyController', function ($scope, $http){
+            $scope.message = 'Enter the City Name to know the Current Weather';
+
+            $scope.getCityName = function(event){
+                //console.log(event);
+                if(event.keyCode === 13) {
+                    $http.get('http://api.openweathermap.org/data/2.5/forecast/daily?q=' + $scope.cityName + '&mode=json&units=metric&cnt=7').success(function (data, status, headers) {
+                        console.log(data);
+                        $scope.repositories = data.list;
+                    });
+                }
+            };
+            $scope.weather_icon_url = 'http://openweathermap.org/img/w/';
+        });
+    </script>
+</head>
+<body>
+        <div ng-controller="MyController">
+            <h1>{{message}}</h1>
+            <input type="text" ng-keydown="getCityName($event)" ng-model="cityName"/>
+
+            <h1>Weather Forecast</h1>
+            <ul class="row">
+                <li class="col-lg-4 col-md-4 col-xs-12" ng-repeat="repo in repositories">
+                    <div class="row results-grid-col">
+                        <div class="col-lg-4">
+                            <img style="width: 100%;" ng-src="{{weather_icon_url + repo.weather[0].icon + '.png'}}" alt="{{repo.weather[0].description}}"/>
+                        </div>
+                        <div class="col-lg-8">
+                            <ul>
+                                <li>Date: </li>
+                                <li>Rain: {{repo.rain}}</li>
+                                <li>Pressure: {{repo.pressure}}</li>
+                                <li>Humidity: {{repo.humidity}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+</body>
+</html>
