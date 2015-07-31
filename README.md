@@ -1,6 +1,8 @@
-# magellan-May-04
-Angular JS Applications
-//CurrentWeather - Make use of all the information received from the Api and adjust CSS (Prettify)
+# Basic Angular JS Application
+CurrentWeather
+Make call to the API (with required query parameters) - http://api.openweathermap.org/data/2.5/forecast/daily 
+Show the received information on the fornt-end
 
-//githubSearch - Add custom CSS to make the page look good
-
+githubSearch
+Make call to the github API (use any search keyword)
+Show the received information on the front-end
